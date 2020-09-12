@@ -104,7 +104,7 @@ pip install nornir_netmiko
 
 #config.yaml
 ---
-runners:
+runner:
  plugin: threaded
  options:
   num_workers: 4
