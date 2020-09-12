@@ -6,7 +6,7 @@ import json
 from pprint import pprint
 import time
 
-# Custom runner
+# Import and register custom runner
 from nornir.core.plugins.runners import RunnersPluginRegister
 from custom_runners import runner_as_completed, runner_as_completed_tqdm
 RunnersPluginRegister.register("my_runner", runner_as_completed_tqdm)
