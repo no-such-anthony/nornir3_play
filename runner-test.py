@@ -44,8 +44,7 @@ my_runner = runner_as_completed_tqdm(num_workers=1)
 agg_result = nr.with_runner(my_runner).run(task=show_version)
 
 
-#Install
-pip install --upgrade --pre nornir
+#Install nornir 3 then
 pip install nornir_utils
 pip install nornir_netmiko
 
