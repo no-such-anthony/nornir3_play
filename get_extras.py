@@ -97,8 +97,7 @@ if __name__ == '__main__':
 
 """ Notes
 
-#Install
-pip install --upgrade --pre nornir
+#Install Nornir 3 then
 pip install nornir_utils
 pip install nornir_netmiko
 
