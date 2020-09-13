@@ -32,6 +32,18 @@ if __name__ == '__main__':
 
 """ Notes
 
+#Alternatively, skip the runner registration and config.yaml modifications and do the following
+
+my_runner = runner_as_completed_tqdm(num_workers=1)
+nr = nr.with_runner(my_runner)
+agg_result = nr.run(task=show_version)
+
+#or
+
+my_runner = runner_as_completed_tqdm(num_workers=1)
+agg_result = nr.with_runner(my_runner).run(task=show_version)
+
+
 #Install
 pip install --upgrade --pre nornir
 pip install nornir_utils
