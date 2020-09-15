@@ -8,8 +8,8 @@ import time
 
 # Import and register custom runner
 from nornir.core.plugins.runners import RunnersPluginRegister
-from custom_runners import runner_as_completed, runner_as_completed_tqdm
-RunnersPluginRegister.register("my_runner", runner_as_completed_tqdm)
+from custom_runners import runner_as_completed, runner_as_completed_tqdm, runner_as_completed_rich
+RunnersPluginRegister.register("my_runner", runner_as_completed_rich)
 
 
 def show_version(task):
@@ -47,6 +47,8 @@ agg_result = nr.with_runner(my_runner).run(task=show_version)
 #Install nornir 3 then
 pip install nornir_utils
 pip install nornir_netmiko
+pip install tqdm
+pip install rich
 
 #config-runner.yaml
 ---
