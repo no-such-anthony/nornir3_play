@@ -43,6 +43,12 @@ agg_result = nr.run(task=show_version)
 my_runner = runner_as_completed_tqdm(num_workers=1)
 agg_result = nr.with_runner(my_runner).run(task=show_version)
 
+#Links that may help me with this
+https://github.com/nornir-automation/nornir3_demo/blob/master/demo/scripts/40_dc_aware_runner.py
+https://github.com/nornir-automation/nornir3_demo/blob/master/nornir3_demo/plugins/runners/dc_aware.py
+https://github.com/nornir-automation/nornir3_demo/blob/master/nornir3_demo/plugins/processors/rich.py
+https://github.com/nornir-automation/nornir/pull/536
+https://nornir.readthedocs.io/en/latest/plugins/
 
 #Install nornir 3 then
 pip install nornir_utils
