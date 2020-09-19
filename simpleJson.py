@@ -2,7 +2,7 @@
 # copied from 
 # https://github.com/nornir-automation/nornir/blob/develop/nornir/plugins/inventory/simple.py
 # and modified for JSON
-# some may notice significant speed increase with large inventories
+# some may notice significant speed increase with InitNornir and large inventories
 #
 # for testing, to quicky convert your inventory
 # alias yaml2json="python -c 'import sys, yaml, json; y=yaml.safe_load(sys.stdin.read()); print(json.dumps(y, indent=2))'"
