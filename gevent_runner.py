@@ -6,7 +6,7 @@ from typing import List
 
 
 #simple gevent runner. nothing fancy just using threading from gevent instead of concurrent.futures.
-class gevent_runner:
+class GeventRunner:
 
     def __init__(self, num_workers: int = 20) -> None:
         self.num_workers = num_workers
