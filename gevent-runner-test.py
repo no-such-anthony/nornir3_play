@@ -3,7 +3,7 @@
 # Custom runner
 from gevent_runner import GeventRunner
 from nornir.core.plugins.runners import RunnersPluginRegister
-RunnersPluginRegister.register("my_runner", GeventRunner)
+RunnersPluginRegister.register("the_runner", GeventRunner)
 
 from nornir import InitNornir
 from nornir_netmiko import netmiko_send_command
@@ -16,7 +16,7 @@ def show_version(task):
 
 def main():
     nr = InitNornir(config_file='config.yaml',
-                    runner= { 'plugin':'my_runner',
+                    runner= { 'plugin':'the_runner',
                               'options': { 'num_workers': 4 }})
     agg_result = nr.run(task=show_version)
 
