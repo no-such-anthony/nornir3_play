@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 # Custom runner
-from gevent_runner import gevent_runner
+from gevent_runner import GeventRunner
 from nornir.core.plugins.runners import RunnersPluginRegister
-RunnersPluginRegister.register("my_runner", gevent_runner)
+RunnersPluginRegister.register("my_runner", GeventRunner)
 
 from nornir import InitNornir
 from nornir_netmiko import netmiko_send_command
