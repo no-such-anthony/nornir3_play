@@ -6,6 +6,10 @@ from typing import List
 
 
 #simple gevent runner. nothing fancy just using threading from gevent instead of concurrent.futures.
+#
+#see https://raw.githubusercontent.com/no-such-anthony/nornir3_play/master/gevent-runner-test.py
+#for example usage, due to monkey patch likely best to have before any other imports/code.
+
 class GeventRunner:
 
     def __init__(self, num_workers: int = 20) -> None:
