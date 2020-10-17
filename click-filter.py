@@ -20,7 +20,8 @@ def main(filt):
             nr = nr.filter(filter_func=lambda h: h.name in filter_for)
         else:
             #only does __any but could introduce click option for __all
-            nr = eval(f'nr.filter(F({filter_what}__any=filter_for))') 
+            F_magic = { f'{filter_what}__any' : filter_for }
+            nr = nr.filter(F(**F_magic))
 
     print(nr.inventory.hosts)    
 
