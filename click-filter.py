@@ -15,12 +15,12 @@ def main(filt):
     nr = InitNornir(config_file='config.yaml')
 
     if len(filt) > 1:
-        filter_type, filter_for = filt[0], filt[1:]
-        if filter_type == 'host':
+        filter_what, filter_for = filt[0], filt[1:]
+        if filter_what == 'host':
             nr = nr.filter(filter_func=lambda h: h.name in filter_for)
         else:
             #only does __any but could introduce click option for __all
-            nr = eval(f'nr.filter(F({filter_type}__any=filter_for))') 
+            nr = eval(f'nr.filter(F({filter_what}__any=filter_for))') 
 
     print(nr.inventory.hosts)    
 
