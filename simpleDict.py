@@ -41,7 +41,9 @@ nr = InitNornir(config_file='config.yaml',
 print(len(nr.inventory.hosts))
 """
 
-from nornir.plugins.inventory.simple import _get_connection_options,_get_defaults,_get_inventory_element
+import logging
+
+from nornir.plugins.inventory.simple import _get_defaults,_get_inventory_element
 
 from nornir.core.inventory import (
     Inventory,
@@ -49,6 +51,9 @@ from nornir.core.inventory import (
     Hosts,
     Defaults,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class SimpleInventoryDict:
