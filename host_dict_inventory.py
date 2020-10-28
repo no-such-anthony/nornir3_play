@@ -21,6 +21,7 @@ def getHosts():
 
 
 def buildHosts(hosts_dict):
+    #remember no groups or defaults
     hosts = Hosts()
     for n, h in hosts_dict.items():
         h.pop('groups', None)
