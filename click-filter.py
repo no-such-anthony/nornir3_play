@@ -35,11 +35,11 @@ def regF(host, filt):
         return False
 
     filter_what = a
-    #using __str__() as a hack for integers, and as a hack for group name
-    if isinstance(filter_what, str) or isinstance(filter_what, int):
-        x = any (regex_search(filter_what.__str__()) for regex_search in regex_searches)
+    #using str() to help with integers and group names
+    if isinstance(filter_what, (str, int)):
+        x = any (regex_search(str(filter_what)) for regex_search in regex_searches)
     elif isinstance(filter_what, list):
-        x = any (regex_search(filter_item.__str__()) for filter_item in filter_what for regex_search in regex_searches)
+        x = any (regex_search(str(filter_item)) for filter_item in filter_what for regex_search in regex_searches)
     else:
         # nothing else?
         x = False
