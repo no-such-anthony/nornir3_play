@@ -50,7 +50,6 @@ def regF(host, filt):
 @click.command()
 @click.argument('filt',nargs=-1)
 def main(filt):
-    nr = InitNornir(config_file='config.yaml')
 
     #method 1
     #custom filter with regex
@@ -63,6 +62,8 @@ def main(filt):
     #python <script> <data_variable> 65535
     #python <script> <data_variable>.<data_variable> fred wilma
 
+    nr = InitNornir(config_file='config.yaml')
+    
     if len(filt) > 1:
         nr = nr.filter(filter_func=regF, filt=filt)
 
@@ -78,6 +79,8 @@ def main(filt):
     #python <script> <data_variable> fred wilma
     #python <script> <data_variable>__<data_variable> fred wilma
 
+    nr = InitNornir(config_file='config.yaml')
+    
     if len(filt) > 1:
         filter_what, filter_for = filt[0], filt[1:]
         if filter_what == 'host':
@@ -86,19 +89,6 @@ def main(filt):
         nr = nr.filter(F(**F_magic))
 
     print(nr.inventory.hosts)
-
-    #method 3 - handles multiple input options
-    #
-    # -f k1:v1 -f k2:v2 
-    #
-    #filter = {}
-    #for a in args:
-    #    k, v = a.split(“:”)
-    #    filter[k] = v
-    #f = F(**filter)
-    #
-    #nr.filter(F(**kwargs))
-    #
 
 
 if __name__ == '__main__':
