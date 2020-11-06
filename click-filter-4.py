@@ -54,7 +54,7 @@ def regFmulti(host, filt):
         regex_search = re.compile("^"+filter_for+"$").search
 
         #using str() to help with data integers and group names
-        if isinstance(data, (str, int)):
+        if isinstance(data, (str, int, float)):
             found = regex_search(str(data))
         elif isinstance(data, list):
             found = any (regex_search(str(data_item)) for data_item in data)
