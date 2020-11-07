@@ -36,12 +36,8 @@ def regFmulti(host, filt):
                 if item is not None:
                     return item
 
-    fd = {}
-    for a in filt:
-        k, v = a.split(':')
-        fd[k] = v
 
-    for filter_what, filter_for in fd.items():
+    for filter_what, filter_for in filt.items():
 
         data = _findvalue(host,filter_what)
 
@@ -71,8 +67,13 @@ def regFmulti(host, filt):
 def main(filt):
 
     nr = InitNornir(config_file='config.yaml')
+    
+    fd = {}
+    for a in filt:
+        k, v = a.split(':')
+        fd[k] = v
 
-    nr = nr.filter(filter_func=regFmulti, filt=filt)
+    nr = nr.filter(filter_func=regFmulti, filt=fd)
     print(nr.inventory.hosts)
     
 
