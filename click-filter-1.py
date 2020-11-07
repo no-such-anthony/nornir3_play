@@ -6,7 +6,7 @@ import click
 
 #
 #Using F filter __any, single search key, multiple search values
-#part match value seems ok for most values but groups needs to be exact
+#part matching works? but groups needs to be exact
 #no regex
 #no integer or float search but you can put the value in quotes within
 #inventory files (and use exact match?)
