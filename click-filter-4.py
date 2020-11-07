@@ -43,10 +43,7 @@ def regFmulti(host, filt):
 
     for filter_what, filter_for in filter.items():
 
-        if filter_what in ['name','platform','groups','hostname','username','password','port']:
-            data = host.get(filter_what, None)
-        else:
-            data = _findvalue(dict(host.data.items()),filter_what)
+        data = _findvalue(host,filter_what)
 
         if not data:
             return False
