@@ -51,7 +51,7 @@ def regF(host, filt):
         found = any (regex_search(str(data_item)) for data_item in data for regex_search in regex_searches)
     else:
         # nothing else?
-        found = False
+        pass
 
     return found
 
