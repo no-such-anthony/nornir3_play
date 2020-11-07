@@ -36,12 +36,12 @@ def regFmulti(host, filt):
                 if item is not None:
                     return item
 
-    filter = {}
+    fd = {}
     for a in filt:
         k, v = a.split(':')
-        filter[k] = v
+        fd[k] = v
 
-    for filter_what, filter_for in filter.items():
+    for filter_what, filter_for in fd.items():
 
         data = _findvalue(host,filter_what)
 
