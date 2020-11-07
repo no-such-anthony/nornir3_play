@@ -13,6 +13,7 @@ import re
 #python <script> -f name:host4 -f site:home
 #python <script> -f name:host[12] -f groups:wilma
 #python <script> -f "name:host1|host2" -f groups:wilma
+#python <script> -f name:"host1|host2" -f groups:wilma
 #python <script> -f hostname:192.168.0.1
 #python <script> -f groups:wilma -f site:barney
 #python <script> -f <data_variable>:wilma
@@ -53,9 +54,9 @@ def regFmulti(host, filt):
         found = False
         regex_search = re.compile("^"+filter_for+"$").search
 
-        #using str() to help with data integers and group names
+        #using str() to help with data integers, floats, and group names
         if isinstance(data, (str, int, float)):
-            found = regex_search(str(data))
+            found = bool (regex_search(str(data)))
         elif isinstance(data, list):
             found = any (regex_search(str(data_item)) for data_item in data)
         else:
