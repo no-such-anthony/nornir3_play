@@ -29,13 +29,13 @@ def main(filt):
 
     nr = InitNornir(config_file='config.yaml')
 
-    filter = {}
+    fd = {}
     for a in filt:
         k, v = a.split(':')
-        filter[k] = v
-    f = F(**filter)
+        fd[k] = v
+    ff = F(**fd)
 
-    nr = nr.filter(f)
+    nr = nr.filter(ff)
     print(nr.inventory.hosts)
     
 
