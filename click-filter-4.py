@@ -21,7 +21,7 @@ import re
 #
 #
 
-def regFmulti(host, filt):
+def regF_and(host, filt):
 
 
     def _findvalue(obj, key):
@@ -73,7 +73,7 @@ def main(filt):
         k, v = a.split(':')
         fd[k] = v
 
-    nr = nr.filter(filter_func=regFmulti, filt=fd)
+    nr = nr.filter(filter_func=regF_and, filt=fd)
     print(nr.inventory.hosts)
     
 
