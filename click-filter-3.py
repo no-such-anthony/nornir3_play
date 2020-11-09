@@ -19,7 +19,7 @@ import re
 #
 
 
-def regF(host, filt):
+def regF_any(host, filt):
 
 
     def _findvalue(obj, key):
@@ -63,7 +63,7 @@ def main(filt):
     nr = InitNornir(config_file='config.yaml')
     
     if len(filt) > 1:
-        nr = nr.filter(filter_func=regF, filt=filt)
+        nr = nr.filter(filter_func=regF_any, filt=filt)
 
     print(nr.inventory.hosts)    
 
