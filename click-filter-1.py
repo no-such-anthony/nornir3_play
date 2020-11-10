@@ -6,10 +6,8 @@ import click
 
 #
 #Using F filter __any, single search key, multiple search values
-#part matching works? but groups needs to be exact
 #no regex
-#no integer or float search but you can put the value in quotes within
-#inventory files (and use exact match?)
+#no integer or float search but you can put the value in quotes within inventory files
 #
 #examples
 #python <script> name host1 host4
