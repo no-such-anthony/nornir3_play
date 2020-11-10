@@ -45,13 +45,10 @@ def regF_any(host, filt):
     regex_searches = [re.compile("^"+pattern+"$").search for pattern in filter_for]
 
     #using str() to help with integers, floats, and group names
-    if isinstance(data, (str, int, float)):
-        found = any (regex_search(str(data)) for regex_search in regex_searches)
-    elif isinstance(data, list):
-        found = any (regex_search(str(data_item)) for data_item in data for regex_search in regex_searches)
+    if isinstance(data, list):
+        found = any (regex_search(str(data_item)) for data_item in data for regex_search in regex_searches) 
     else:
-        # nothing else?
-        pass
+        found = any (regex_search(str(data)) for regex_search in regex_searches)
 
     return found
 
