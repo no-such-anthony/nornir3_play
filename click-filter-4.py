@@ -44,17 +44,13 @@ def regF_and(host, filt):
         if not data:
             return False
 
-        found = False
         regex_search = re.compile("^"+filter_for+"$").search
 
         #using str() to help with data integers, floats, and group names
-        if isinstance(data, (str, int, float)):
-            found = bool (regex_search(str(data)))
-        elif isinstance(data, list):
+        if isinstance(data, list):
             found = any (regex_search(str(data_item)) for data_item in data)
         else:
-            # nothing else?
-            pass
+            found = bool (regex_search(str(data)))
 
         if not found:
             break
