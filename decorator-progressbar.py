@@ -15,8 +15,6 @@ class PBar:
     def __call__(self, f):
         @wraps(f)
         def wrap(*args, **kwargs):
-            if self.enabled:
-                pass
             retval = f(*args, **kwargs)
             if self.enabled:
                 tqdm.write(args[0].host.name)
