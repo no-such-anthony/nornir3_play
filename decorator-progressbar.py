@@ -10,7 +10,8 @@ class PBar:
         self.enabled = True
     
     def start(self, num_hosts):
-        self.progress = tqdm(total=num_hosts, desc="progress",)
+        if self.enabled:
+            self.progress = tqdm(total=num_hosts, desc="progress",)
     
     def __call__(self, f):
         @wraps(f)
@@ -23,7 +24,8 @@ class PBar:
         return wrap
 
     def finish(self):
-        self.progress.close()
+        if self.enabled:
+            self.progress.close()
 
 pbar = PBar()
 
