@@ -2,7 +2,6 @@ from nornir import InitNornir
 from nornir.core.filter import F
 import time
 from functools import wraps
-import re
 
 
 def nfilt(filt):
