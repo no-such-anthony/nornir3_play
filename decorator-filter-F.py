@@ -9,8 +9,7 @@ def nfilt(filt):
     def decorator(f):
         @wraps(f)
         def wrap(*args, **kwargs):
-            ff = F(**filt)
-            if ff(args[0].host):
+            if filt(args[0].host):
                 retval = f(*args, **kwargs)
             else:
                 retval = "filtered"
@@ -19,8 +18,7 @@ def nfilt(filt):
     return decorator
 
 
-@nfilt( { 'name': 'host1',
-          'tag': 'fred'} )
+@nfilt( F ( ** { 'name': 'host1', 'tag': 'fred' } ) )
 def show_version(task):
     time.sleep(2)
     return('ran it')
