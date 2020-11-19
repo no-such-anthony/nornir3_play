@@ -20,6 +20,7 @@ class PBar:
             if self.enabled:
                 tqdm.write(args[0].host.name)
                 self.progress.update()
+                self.progress.refresh()
             return retval
         return wrap
 
