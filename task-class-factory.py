@@ -9,17 +9,16 @@ def Task_Factory(task, *args, **kwargs):
 
     cmd = kwargs.get('cmd', None)
     cmdlet = kwargs.get('cmdlet', None)
-    not_yet = Not_Implemented(*args, **kwargs)
 
     if task.host.name == 'host3':
-        return not_yet
+        pass
 
     elif task.host.platform == 'ios' and cmd == 'show':
 
         if cmdlet == 'run':
             return Ios_Show_Run(*args, **kwargs)
         
-    return not_yet
+    return Not_Implemented(*args, **kwargs)
 
 
 class Base_Factory():
