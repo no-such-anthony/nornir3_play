@@ -18,7 +18,7 @@ def Task_Factory(task, *args, **kwargs):
         if cmdlet == 'run':
             return Ios_Show_Run(*args, **kwargs)
         
-    return Not_Implemented(*args, **kwargs)
+    return Base_Factory(*args, **kwargs)
 
 
 class Base_Factory():
@@ -26,11 +26,9 @@ class Base_Factory():
     def __init__(self, *args, **kwargs):
         self.__name__ = self.__class__.__name__
 
-
-class Not_Implemented(Base_Factory):
-
+        
     def __call__(self, task, *args, **kwargs):
-        return f'Not implemented - {task.host.platform} - {task.host.name}' 
+        return f'Not implemented - {task.host.platform} - {task.host.name}'
 
 
 class Ios_Show_Run(Base_Factory):
