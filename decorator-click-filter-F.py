@@ -53,6 +53,10 @@ def main(filt):
 
     global nfilt_filter
     nfilt_filter = build_F(filt)
+    
+    #override cli argument in code?
+    #filt = ['groups__contains:wilma','tag:fred']
+    #nfilt_filter = build_F(filt)
 
     nr = InitNornir(config_file='dec-config.yaml')
 
