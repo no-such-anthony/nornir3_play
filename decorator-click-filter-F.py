@@ -22,7 +22,7 @@ class nfilt(object):
 
     def __call__(self, f):
         def wrapped_f(*args, **kwargs):
-            #override global nfilt_filter if decorator has filter array
+            #override global nfilt_filter if decorator has filter array argument
             if self.args:
                 ff = build_F(self.args[0])
             else:
