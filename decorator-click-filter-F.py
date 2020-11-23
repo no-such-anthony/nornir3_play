@@ -39,7 +39,7 @@ class nfilt(object):
 #can override CLI filter by supplying filter array as argument
 #@nfilt(['name:host1'])
 #@nfilt(['groups__contains:wilma','tag:fred'])
-#@nfilt()
+@nfilt()
 def show_versions(task):
     msg = f'{task.host.name} - running...'
     print(msg)
