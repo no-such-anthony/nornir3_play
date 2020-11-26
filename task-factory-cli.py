@@ -129,7 +129,7 @@ def do_task(task,todo):
         task.run(the_task)
 
 
-#-f k1:v1 -f k2:v2 -t sayhello -t show:run
+#-f k1:v1 -f k2:v2 -t cmd -t cmd:cmdlet
 @click.command()
 @click.option('--filt', '-f', multiple=True)
 @click.option('--task', '-t', multiple=True)
