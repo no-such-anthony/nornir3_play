@@ -1,8 +1,68 @@
 from nornir import InitNornir
 from nornir.core.filter import F
+from nornir.core import Task
 from nornir_utils.plugins.functions import print_result
+from nornir_netmiko import netmiko_send_command
 from functools import wraps
 import click
+
+
+def build_F(filt):
+    fd = {}
+    for a in filt:
+        k, v = a.split(':')
+        fd[k] = v
+    ff = F(**fd)
+    #print('building filter...')
+
+    return ff
+
+def build_tasks(task):
+    tl = []
+    for a in task:
+        cmds = a.split(':',1)
+        td={}
+        td['cmd']=cmds[0]
+        if len(cmds)==2:
+            td['cmdlet']=cmds[1] 
+        else:
+             td['cmdlet']=None
+        tl.append(td)
+    #print('building tasks...')
+
+    return tl
+
+
+class nfilt(object):
+
+    def __init__(self, *args):
+        if args:
+            self.ff = build_F(args[0])
+        else:
+            self.ff = None
+
+
+    def __call__(self, f):
+        def wrapped_f(*args, **kwargs):
+            #override global nfilt_filter if decorator has filter array argument
+            if self.ff:
+                ff = self.ff
+            else:
+                global nfilt_filter
+                ff = nfilt_filter
+            
+            #quick and dirty check to work outside and inside of classes
+            if isinstance(args[0],Task):
+                arg = args[0]
+            else:
+                arg = args[1]
+
+            if ff(arg.host):
+                retval = f(*args, **kwargs)
+            else:
+                retval = "filtered"    
+            return retval
+        return wrapped_f
 
 
 def Task_Factory(task, **kwargs):
@@ -49,6 +109,7 @@ class Ios_Show_Run(Base_Factory):
 
 class Sayhello(Base_Factory):
 
+    @nfilt(['name:host2'])
     def __call__(self, task, **kwargs):
         self.call_kwargs = kwargs
         #print(self.init_kwargs)
@@ -56,57 +117,6 @@ class Sayhello(Base_Factory):
         cmd = 'Hello, world!'
         #result = task.run(task=netmiko_send_command, name=cmd, command_string=cmd)
         return cmd
-
-
-def build_F(filt):
-    fd = {}
-    for a in filt:
-        k, v = a.split(':')
-        fd[k] = v
-    ff = F(**fd)
-    #print('building filter...')
-
-    return ff
-
-def build_tasks(task):
-    tl = []
-    for a in task:
-        cmds = a.split(':',1)
-        td={}
-        td['cmd']=cmds[0]
-        if len(cmds)==2:
-            td['cmdlet']=cmds[1] 
-        else:
-             td['cmdlet']=None
-        tl.append(td)
-    #print('building tasks...')
-
-    return tl
-
-
-class nfilt(object):
-
-    def __init__(self, *args):
-        if args:
-            self.ff = build_F(args[0])
-        else:
-            self.ff = None
-
-
-    def __call__(self, f):
-        def wrapped_f(*args, **kwargs):
-            #override global nfilt_filter if decorator has filter array argument
-            if self.ff:
-                ff = self.ff
-            else:
-                global nfilt_filter
-                ff = nfilt_filter            
-            if ff(args[0].host):
-                retval = f(*args, **kwargs)
-            else:
-                retval = "filtered"    
-            return retval
-        return wrapped_f
 
 
 #can override CLI filter by supplying filter array as argument
@@ -146,7 +156,7 @@ def main(filt, task):
     #or skip the decorator altogether and just use nr.filter with cli arguments
     #nr = nr.filter(nfilt_filter)
 
-    result = nr.run(task=do_task,todo=todo)
+    result = nr.run(task=do_task,todo=todo,name="Tasks")
     print_result(result)
 
 
