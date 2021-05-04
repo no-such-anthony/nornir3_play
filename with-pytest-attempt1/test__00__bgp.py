@@ -35,7 +35,7 @@ def pytest_generate_tests(metafunc):
                           )
 
 
-#per bgp neighbor tests
+# per bgp neighbor tests
 def test_bgp_summary(nr, neighbor):
     
     host = nr.inventory.hosts[neighbor['device_name']]
@@ -50,6 +50,7 @@ def test_bgp_summary(nr, neighbor):
 
     elif state_pfxrcd == '0':
         pytest.fail(f'Neighbor up, but no prefixes received.')
-        
+       
+    # BGP up and prefixes being received!
     return True
     
