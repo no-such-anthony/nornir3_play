@@ -17,7 +17,7 @@ def pytest_sessionstart(session):
     config = session.config
     
     #Unused, but originally had config._nr.nr so that there could be other
-    #Nornir specific session information
+    #Nornir related session information
     #config._nr = NORNIRconfig()
 
     device_name = config.getoption("--name")
