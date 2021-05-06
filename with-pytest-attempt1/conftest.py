@@ -15,7 +15,10 @@ def pytest_addoption(parser):
 
 def pytest_sessionstart(session):
     config = session.config
-    config._nr = NORNIRconfig()
+    
+    #Unused, but originally had config._nr.nr so that there could be other
+    #Nornir specific session information
+    #config._nr = NORNIRconfig()
 
     device_name = config.getoption("--name")
 
