@@ -27,6 +27,10 @@ def pytest_sessionstart(session):
 
     if len(pytest.ptnr.nr.inventory.hosts.keys()) == 0:
         pytest.exit("Nothing found in Nornir inventory.")
+        
+    # gather data for tests
+    pytest.ptnr.get_conns()
+    pytest.ptnr.get_bgp()
 
 
 def pytest_sessionfinish(session):
