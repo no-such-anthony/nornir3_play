@@ -62,6 +62,5 @@ def test_bgp_summary(neighbor):
     elif state_pfxrcd == '0':
         pytest.fail(f'Neighbor up, but no prefixes received.')
         
-    # Hopefull this proved that BGP up and prefixes being received!
+    # Hopefully this proves that BGP up and prefixes being received!
     return True
-    
