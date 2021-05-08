@@ -3,42 +3,49 @@ from nornir_netmiko import netmiko_send_command
 from genie.utils import Dq
 
 
-def bgp_name_test(item):
+def helper_id(item):
 
-    return f"{item['device_name']} bgp neighbor {item['neighbor']}"
+    if isinstance(item, dict):
+        return f"{item['device_name']} bgp neighbor {item['neighbor']}"
+
+
+def gather_task(task):
+
+    enable = 'secret' in task.host.get_connection_parameters("netmiko").extras
+    output = task.run(task=netmiko_send_command,
+                    command_string='show bgp ipv4 unicast summary',
+                    use_genie=True,
+                    enable=enable)
+
 
 
 def pytest_generate_tests(metafunc):
 
-    nr = metafunc.config._nr
-
     # get bgp output and parameterize
-    output = nr.run(task=netmiko_send_command,
-                    command_string='show bgp ipv4 unicast summary',
-                    use_genie=True,
-                    enable=True)
+    output = pytest.nr.run(task=gather_task)
 
+    # process output
     param = []
     for device_name, result in output.items():
-        nr.inventory.hosts[device_name]['show_bgp_ipv4_unicast_summary'] = result[0].result
-        if result[0].failed:
-            print(f'\n{device_name} failed with {result[0].exception}.')
+        pytest.nr.inventory.hosts[device_name]['show_bgp_ipv4_unicast_summary'] = result[1].result
+        if result[1].failed:
+            print(f'\n{device_name} failed with {result[1].exception}.')
         else:    
-            for neighbor in Dq(result[0].result).get_values('neighbor'):
+            for neighbor in Dq(result[1].result).get_values('neighbor'):
                 param.append({ 'device_name': device_name,
                                'neighbor': neighbor
                                })
 
     metafunc.parametrize('neighbor',
                           param,
-                          ids=bgp_name_test
+                          ids=helper_id
                           )
 
 
-# per bgp neighbor tests
-def test_bgp_summary(nr, neighbor):
-    
-    host = nr.inventory.hosts[neighbor['device_name']]
+#per bgp neighbor tests
+def test_bgp_summary(neighbor):
+
+    host = pytest.nr.inventory.hosts[neighbor['device_name']]
     bgp_ipv4_unicast_summary = host.data['show_bgp_ipv4_unicast_summary']
     state_pfxrcd = Dq(bgp_ipv4_unicast_summary).contains(neighbor['neighbor']).get_values('state_pfxrcd')[0]
 
@@ -48,9 +55,14 @@ def test_bgp_summary(nr, neighbor):
     elif state_pfxrcd == 'Idle (Admin)':
         pytest.fail(f'Neighbor administratively shutdown.')
 
+    elif state_pfxrcd == 'Idle (PfxCt)':
+        pytest.fail(f'Neighbor exceed prefix limit.')
+
+    elif not state_pfxrcd.isdigit():
+        pytest.fail(f'Neighor state is: {state_pfxrcd}.')
+
     elif state_pfxrcd == '0':
         pytest.fail(f'Neighbor up, but no prefixes received.')
-       
-    # BGP up and prefixes being received!  Well, after a few more checks, but this will do for now :)
+        
+    # Hopefull this proved that BGP up and prefixes being received!
     return True
-    
