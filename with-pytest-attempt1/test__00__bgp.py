@@ -19,7 +19,6 @@ def gather_task(task):
                     enable=enable)
 
 
-
 def pytest_generate_tests(metafunc):
 
     # get bgp output and parameterize
@@ -28,13 +27,19 @@ def pytest_generate_tests(metafunc):
     # process output
     param = []
     for device_name, result in output.items():
-        if result[1].failed:
-            print(f'\n{device_name} failed with {result[1].exception}')
+
+        if result.failed:
+            print(f'\n{device_name} failed:')
+            for r in result:
+                if r.failed:
+                    print(f'{r.name} failed with {r.exception}')
+
         elif not isinstance(result[1].result, QDict):
                 if '% BGP not active' in result[1].result:
                     print(f'\n{device_name} - BGP not active')
                 else:
-                    print(f'\n{device_name} - Something went wrong - {result[1].result}')
+                    print(f'\n{device_name} - Something else went wrong - {result[1].result}')
+
         else:    
             for neighbor in Dq(result[1].result).get_values('neighbor'):
                 param.append({ 'device_name': device_name,
@@ -42,16 +47,16 @@ def pytest_generate_tests(metafunc):
                                'state_pfxrcd': Dq(result[1].result).contains(neighbor).get_values('state_pfxrcd')[0]
                                })
 
-    metafunc.parametrize('neighbor',
+    metafunc.parametrize('data',
                           param,
                           ids=helper_id
                           )
 
 
 #per bgp neighbor tests
-def test_bgp_summary(neighbor):
+def test_bgp_summary(data):
 
-    state_pfxrcd = neighbor['state_pfxrcd']
+    state_pfxrcd = data['state_pfxrcd']
 
     if state_pfxrcd in ['Idle','Active']:
         pytest.fail(f'Inactive neighbor.')
@@ -70,4 +75,3 @@ def test_bgp_summary(neighbor):
         
     # Hopefully this proves that BGP up and prefixes being received!
     return True
-    
