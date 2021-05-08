@@ -27,7 +27,6 @@ def pytest_sessionstart(session):
     filt = config.getoption("--filt")
 
     pytest.nr = InitNornir(config_file="config.yaml")
-    pytest.nr_params = {}
 
     if filt:
             fd = {}
