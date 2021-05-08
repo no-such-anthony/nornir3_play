@@ -3,42 +3,48 @@ from nornir import InitNornir
 from nornir.core.filter import F
 
 
-class NORNIRconfig(object):
-    """ for Nornir specific config / runtime """
-    pass
-
+# Basic 'and' F filtering with --filt
+#
+# --filt name:host4 --filt <data_key>:home
+# --filt hostname:192.168.0.1
+# --filt groups__contains:wilma --filt site:barney
+# --filt <data_key1>:wilma --filt <data_key2>:10
+# --filt <data_key>__<nested_data_key>:fred
+# --filt "tag__any:wilma, fred"
+# --filt tag__any:wilma,fred
+# --filt name__any:host1,host2
 
 def pytest_addoption(parser):
-    parser.addoption("--name",
-                     help='nornir device name')
+
+    parser.addoption("--filt",
+                     action="append",
+                     help="Basic Nornir 'and' F filter, key:data")
 
 
 def pytest_sessionstart(session):
+
     config = session.config
-    
-    #Unused, but originally had config._nr.nr so that there could be other
-    #Nornir related session information
-    #config._nr = NORNIRconfig()
+    filt = config.getoption("--filt")
 
-    device_name = config.getoption("--name")
+    pytest.nr = InitNornir(config_file="config.yaml")
+    pytest.nr_params = {}
 
-    pytestnr = InitNornir(config_file="config.yaml")
+    if filt:
+            fd = {}
+            for a in filt:
+                k, v = a.split(':')
+                if k.endswith('__any'):
+                    v = [x.strip() for x in v.split(',')]
+                fd[k] = v
+            ff = F(**fd)
 
-    if device_name:
-        pytestnr = pytestnr.filter(F(name=device_name))
+            pytest.nr = pytest.nr.filter(ff)
 
-    if len(pytestnr.inventory.hosts.keys()) == 0:
+    if len(pytest.nr.inventory.hosts.keys()) == 0:
         pytest.exit("Nothing found in Nornir inventory.")
-
-    config._nr = pytestnr
 
 
 def pytest_sessionfinish(session):
-    config = session.config
-    config._nr.close_connections
 
-
-@pytest.fixture(scope='session')
-def nr(request):
-    return request.config._nr
+    pytest.nr.close_connections
 
