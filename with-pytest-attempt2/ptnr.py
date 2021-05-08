@@ -21,10 +21,6 @@ class PTNR(object):
             ff = F(**fd)
 
             self.nr = self.nr.filter(ff)
-        
-        #run gathering commands
-        self.get_conns()
-        self.get_bgp()
 
 
     def connection_setup(self, task):
