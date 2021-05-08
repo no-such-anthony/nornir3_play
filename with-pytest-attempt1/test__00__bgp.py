@@ -1,6 +1,7 @@
 import pytest
 from nornir_netmiko import netmiko_send_command
 from genie.utils import Dq
+from genie.conf.base.utils import QDict
 
 
 def helper_id(item):
@@ -28,7 +29,12 @@ def pytest_generate_tests(metafunc):
     param = []
     for device_name, result in output.items():
         if result[1].failed:
-            print(f'\n{device_name} failed with {result[1].exception}.')
+            print(f'\n{device_name} failed with {result[1].exception}')
+        elif not isinstance(result[1].result, QDict):
+                if '% BGP not active' in result[1].result:
+                    print(f'\n{device_name} - BGP not active')
+                else:
+                    print(f'\n{device_name} - Something went wrong - {result[1].result}')
         else:    
             for neighbor in Dq(result[1].result).get_values('neighbor'):
                 param.append({ 'device_name': device_name,
@@ -64,3 +70,4 @@ def test_bgp_summary(neighbor):
         
     # Hopefully this proves that BGP up and prefixes being received!
     return True
+    
