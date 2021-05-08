@@ -29,7 +29,7 @@ def pytest_generate_tests(metafunc):
     for device_name, result in output.items():
         pytest.nr.inventory.hosts[device_name]['show_bgp_ipv4_unicast_summary'] = result[1].result
         if result[1].failed:
-            print(f'\n{device_name} failed with {result[1].exception}.')
+            print(f'\n{device_name} failed with {result[1].exception}')
         else:    
             for neighbor in Dq(result[1].result).get_values('neighbor'):
                 param.append({ 'device_name': device_name,
