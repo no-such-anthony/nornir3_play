@@ -27,13 +27,13 @@ def pytest_generate_tests(metafunc):
     # process output
     param = []
     for device_name, result in output.items():
-        pytest.nr.inventory.hosts[device_name]['show_bgp_ipv4_unicast_summary'] = result[1].result
         if result[1].failed:
-            print(f'\n{device_name} failed with {result[1].exception}')
+            print(f'\n{device_name} failed with {result[1].exception}.')
         else:    
             for neighbor in Dq(result[1].result).get_values('neighbor'):
                 param.append({ 'device_name': device_name,
-                               'neighbor': neighbor
+                               'neighbor': neighbor,
+                               'state_pfxrcd': Dq(result[1].result).contains(neighbor).get_values('state_pfxrcd')[0]
                                })
 
     metafunc.parametrize('neighbor',
@@ -45,9 +45,7 @@ def pytest_generate_tests(metafunc):
 #per bgp neighbor tests
 def test_bgp_summary(neighbor):
 
-    host = pytest.nr.inventory.hosts[neighbor['device_name']]
-    bgp_ipv4_unicast_summary = host.data['show_bgp_ipv4_unicast_summary']
-    state_pfxrcd = Dq(bgp_ipv4_unicast_summary).contains(neighbor['neighbor']).get_values('state_pfxrcd')[0]
+    state_pfxrcd = neighbor['state_pfxrcd']
 
     if state_pfxrcd in ['Idle','Active']:
         pytest.fail(f'Inactive neighbor.')
@@ -64,5 +62,6 @@ def test_bgp_summary(neighbor):
     elif state_pfxrcd == '0':
         pytest.fail(f'Neighbor up, but no prefixes received.')
         
-    # Hopefully this proves that BGP up and prefixes being received!
+    # Hopefull this proved that BGP up and prefixes being received!
     return True
+    
