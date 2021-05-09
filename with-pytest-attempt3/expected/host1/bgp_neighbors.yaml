@@ -1,6 +1,6 @@
 #state can be established, inactive, shutdown
 #prefix_test can be lt,lte,gt,gte,eq,neq followed by a comma and a value
-#an empty prefix_test can be any number
+#an empty prefix_test will default to gt,0
 10.0.12.2:
   remote_as: 10
   state: established 
