@@ -1,0 +1,11 @@
+#state can be established, inactive, shutdown
+#prefix_test can be lt,lte,gt,gte,eq,neq followed by a comma and a value
+#an empty prefix_test can be any number
+10.0.12.2:
+  remote_as: 10
+  state: established 
+  prefix_test: eq,2
+10.24.3.4:
+  remote_as: 20
+  state: shutdown
+  prefix_test:
