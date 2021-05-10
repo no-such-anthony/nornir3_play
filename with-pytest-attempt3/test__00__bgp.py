@@ -46,7 +46,7 @@ def gathering_job(task):
 
 def pytest_generate_tests(metafunc):
 
-    # if task failed in a previous test, lets reset
+    # if nornir task failed in a previous test, lets reset
     pytest.nr.data.reset_failed_hosts() 
 
     # gathering job
@@ -152,6 +152,6 @@ def test_bgp_summary(data):
         if t != v:
             return True
         else:
-            pytest.fail(f"Prefixes {t} should not equal expected{v}")
+            pytest.fail(f"Prefixes {t} should not equal expected {v}")
 
     pytest.fail('Something wrong in prefix_test syntax?')
