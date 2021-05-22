@@ -2,7 +2,7 @@ Extending attempt1 I got around to reading expected results from a yaml file and
 
 ![](https://github.com/no-such-anthony/nornir3_play/blob/master/with-pytest-attempt3/example%20usage.PNG)
 
-If you don't to inject the nornir object into the pytest namespace as is here, you can always store within pytest session config. Something like
+If you don't want to inject the nornir object into the pytest namespace as is here, you can always store within pytest session config. Something like
 ```
 def pytest_sessionstart(session):
     config = session.config
